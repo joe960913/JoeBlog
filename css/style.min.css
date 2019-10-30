@@ -105,7 +105,9 @@ blockquote,
 q {
   quotes: none;
 }
-* ::-webkit-scrollbar {display: none}
+* ::-webkit-scrollbar {
+  display: none;
+}
 blockquote:before,
 blockquote:after,
 q:before,
@@ -213,11 +215,13 @@ h2 {
 }
 .profile #header {
   margin-bottom: 40px;
+  margin-top: 58px;
   padding-bottom: 20px;
   padding-top: 60px;
   text-align: center;
   position: relative;
-  background: url('/images/mount2.jpg') top/cover no-repeat
+  background: url(/images/mount2.jpg) top/cover no-repeat;
+  top: -20px;
 }
 .profile #avatar {
   display: inline-block;
@@ -242,12 +246,14 @@ h2 {
   font-style: normal;
 }
 nav.main-nav {
-  padding: 20px 20px 0;
+  padding: 20px 20px 20px 0;
   background: #fff;
   background: rgba(255, 255, 255, 0.9);
-  margin: 0 auto;
+  /* margin: 0 auto; */
   text-align: right;
   z-index: 100;
+  position: fixed;
+  width: 100%
 }
 nav.main-nav a {
   top: 8px;
@@ -382,6 +388,7 @@ i {
   margin-bottom: 20px;
   color: #222;
   font: 300 32px/1.4em "Helvetica Neue", Helvetica, Arial, sans-serif;
+  padding-top: 0px;
 }
 .post h2 {
   margin-top: 20px;
