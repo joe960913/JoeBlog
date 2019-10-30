@@ -217,7 +217,7 @@ h2 {
   padding-top: 60px;
   text-align: center;
   position: relative;
-  background: url('../images/mount.jpg') top/cover no-repeat
+  background: url('/images/mount.jpg') top/cover no-repeat
 }
 .profile #avatar {
   display: inline-block;
