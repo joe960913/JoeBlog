@@ -1,0 +1,51 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><meta name="viewport" content="width=device-width, initial-scale=1"><title>this在React组件中的指向</title><link rel="shortcut icon" href="/images/ghost.jpg"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="//cdn.bootcss.com/highlight.js/9.2.0/styles/github.min.css"><script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script><meta name="generator" content="Hexo 4.0.0"></head><body><nav class="main-nav"><a href="/">Home</a><a href="/archives">Archives</a><a href="/about">About Me</a></nav><div class="profile"><section id="wrapper"><header id="header"><a href="/"><img class="2x" id="avatar" src="/images/ghost.jpg"></a><h1>Redamancy_13</h1><h2></h2></header></section></div><section class="post" id="wrapper"><article><header><h1>this在React组件中的指向</h1><h2 class="headline">Aug 11, 2018 10:50·
+411 words
+·
+1 minutes read<span class="tags"></span></h2></header><section id="post-body"><p>之前学习Js的时候以为<code>this</code>的指向已经掌握了，没想到在学习React的时候又被<code>this</code>绕晕了，记录一下。🤯</p>
+<pre><code>class Clock extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { date: new Date() };
+    //this.tick = this.tick.bind(this);
+  }
+  tick () {
+    this.setState({ date: new Date() });
+  }
+  componentDidMount() {
+    this.timeID = setInterval(() =&gt; this.tick(), 1000);
+  } //挂载
+  componentWillUnmount() {
+    clearInterval(this.timeID)
+  } //卸载
+  render() {
+    return (
+      &lt;div&gt;
+        &lt;h1&gt;now time is&lt;/h1&gt;
+        &lt;h1&gt;{this.state.date.toLocaleTimeString()}&lt;/h1&gt;
+      &lt;/div&gt;
+    );
+  }
+}</code></pre><p>上面是React官方文档的一个计时器demo，一共出现了六次<code>this</code>。</p>
+<hr>
+<pre><code>constructor(props) {
+    super(props);
+    this.state = { date: new Date() };</code></pre><p><code>constructor</code>中的this，<code>constructor</code>是一种用于创建和初始化<code>clock类</code>创建的对象实例的特殊方法，<code>super</code>是调用父类构造函数，参数就是传到父类构造函数的参数，<code>super(x)即Parent.call(this,x)</code>,<code>this</code>指向<code>clock类</code>的实例对象。</p>
+<hr>
+<pre><code>tick () {
+    this.setState({ date: new Date() });</code></pre><p>类中的方法<code>tick</code>，同样，指向类的实例化对象。</p>
+<hr>
+<p>其实后面的没必要讲了，因为<code>this</code>的指向无非下面几种：</p>
+<ul>
+<li>当<code>this</code>定义在一个普通对象的方法中，它指向该对象。另外，当类中的方法要引用类属性时，要加上<code>this</code>，否则会报错。</li>
+<li>当<code>this</code>定于在一个构造函数/类的方法中，它指向该构造函数/类的实例对象。</li>
+<li>出现<code>call,apply,bind</code>方法时，<code>this</code>指向传入的参数对象。</li>
+</ul>
+<hr>
+<p>永远的一句话总结，this的指向被调用时所在的上下文。<br>另外，箭头函数的<code>this</code>绑定在定义时所在的普通函数，不会随着环境的改变而改变，除非那个普通函数的<code>this</code>改变。</p>
+</section><nav id="post-nav"><span class="prev"><a href="/antd-table/"><span class="arrow">←</span>Newer Posts</a></span><span class="next"><a href="/react-lifecircle/">Older Posts<span class="arrow">→</span></a></span></nav><section><div id="disqus_thread"><noscript>'Please enable JavaScript to view the'<a href="http://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript></div></section><script>(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());</script></article></section><footer id="footer"><div id="social"><a class="symbol" href="https://github.com/joe960913" target="_blank" rel="noopener"><i class="fa fa-github"></i></a><p class="small">You still have time</p></div></footer><script>hljs.initHighlightingOnLoad();</script></body></html>

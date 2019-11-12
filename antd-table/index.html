@@ -1,0 +1,25 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><meta name="viewport" content="width=device-width, initial-scale=1"><title>antd-table组件添加分页属性</title><link rel="shortcut icon" href="/images/ghost.jpg"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="//cdn.bootcss.com/highlight.js/9.2.0/styles/github.min.css"><script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script><meta name="generator" content="Hexo 4.0.0"></head><body><nav class="main-nav"><a href="/">Home</a><a href="/archives">Archives</a><a href="/about">About Me</a></nav><div class="profile"><section id="wrapper"><header id="header"><a href="/"><img class="2x" id="avatar" src="/images/ghost.jpg"></a><h1>Redamancy_13</h1><h2></h2></header></section></div><section class="post" id="wrapper"><article><header><h1>antd-table组件添加分页属性</h1><h2 class="headline">Nov 09, 2018 10:44·
+70 words
+·
+1 minutes read<span class="tags"></span></h2></header><section id="post-body"><p>table 中添加分页属性</p>
+<p>定义分页属性</p>
+<p>获取model中后台的数据data</p>
+<p>total:data.total</p>
+<p>pageSize:data.pageSize</p>
+<p>current（表示当前页数）:data.pageNum</p>
+<p>onChange（页码改变触发的func）:(current)=&gt;(this.changePage(current))</p>
+<p>定义changePage:</p>
+<pre><code class="javascript">changePage=(current)=&gt;{
+  const { dispatch } = this.props
+    dispatch({
+    type:&#39;query&#39;
+    payload:{pageNum:current}
+  })
+}</code></pre>
+</section><nav id="post-nav"><span class="prev"><a href="/react-key/"><span class="arrow">←</span>Newer Posts</a></span><span class="next"><a href="/this-point/">Older Posts<span class="arrow">→</span></a></span></nav><section><div id="disqus_thread"><noscript>'Please enable JavaScript to view the'<a href="http://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript></div></section><script>(function(){
+  var dsq = document.createElement('script');
+  dsq.type = 'text/javascript';
+  dsq.async = true;
+  dsq.src = '//.disqus.com/embed.js';
+  (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+}());</script></article></section><footer id="footer"><div id="social"><a class="symbol" href="https://github.com/joe960913" target="_blank" rel="noopener"><i class="fa fa-github"></i></a><p class="small">You still have time</p></div></footer><script>hljs.initHighlightingOnLoad();</script></body></html>
