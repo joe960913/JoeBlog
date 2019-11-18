@@ -18,7 +18,7 @@
 <li><p>作用域：负责收集并维护由所有声明的变量组成的一系列查询，并实施一套非常严格的规则，确定当前执行的代码对这些变量的访问权限。 </p>
 </li>
 </ul>
-<p>整个过程：变量的赋值操作会执行两个动作，首先编译器会在当前作用域中声明一个变 量(如果之前没有声明过)，然后在运行时引擎会在作用域中查找该变量，如果能够找到就会对它赋值。 </p>
+<p>整个过程：变量的赋值操作会执行两个动作，首先编译器会在当前作用域中声明一个变量(如果之前没有声明过)，然后在运行时引擎会在作用域中查找该变量，如果能够找到就会对它赋值。 </p>
 <p>LHS查询：<code>a = 2</code>用到了LHS查询，不关心当前的值是什么，只是想要为 = 2 这个赋值操作找到一个目标。赋值操作会引起LHS查询。</p>
 <p>RHS查询：<code>console.log(a)</code>用到了RHS查询，retrieve his source value(取到它的源值)。取值操作会引起RHS查询。</p>
 <p>作用域嵌套：在当 前作用域中无法找到某个变量时，引擎就会在外层嵌套的作用域中继续查找，直到 找到该变量，或抵达最外层的作用域(也就是全局作用域)为止。 </p>
@@ -118,7 +118,7 @@ var btn = document.getElementById( &quot;my_button&quot; ); btn.addEventListener
 </ol>
 </li>
 </ol>
-</section><nav id="post-nav"><span class="prev"></span><span class="next"><a href="/a-letter-to-orange/">Older Posts<span class="arrow">→</span></a></span></nav><section><div id="disqus_thread"><noscript>'Please enable JavaScript to view the'<a href="http://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript></div></section><script>(function(){
+</section><nav id="post-nav"><span class="prev"><a href="/Promise/"><span class="arrow">←</span>Newer Posts</a></span><span class="next"><a href="/a-letter-to-orange/">Older Posts<span class="arrow">→</span></a></span></nav><section><div id="disqus_thread"><noscript>'Please enable JavaScript to view the'<a href="http://disqus.com/?ref_noscript" target="_blank" rel="noopener">comments powered by Disqus.</a></noscript></div></section><script>(function(){
   var dsq = document.createElement('script');
   dsq.type = 'text/javascript';
   dsq.async = true;
