@@ -59,11 +59,7 @@ console.log(sum);// undefined</code></pre><p>The problem with the above code is 
 <li>We invoke <code>doubleAfter2Seconds</code> one final time, this time passing in a value of <code>30</code>. Two seconds later, the return value of <code>60</code> will be returned to the <code>c</code> variable.</li>
 <li>Finally, we resolve our Promise with the value of <code>10 + 20 + 40 + 60</code> or <code>130</code>.</li>
 </ul>
-<p>When we put all of the code together, here’s what it looks like:</p>
-<iframe src="https://codeburst.io/media/02c80e8d8f181f398059e723522d9297" allowfullscreen="" frameborder="0" height="549" width="680" title="promise example" class="ew t u id ak" scrolling="auto" style="box-sizing: inherit; top: 0px; left: 0px; width: 680px; position: absolute; height: 548.984px;"></iframe>
-## Switching from Promises to Async/Await.
-
-<p>Awesome! Now lets see just how much easier we could write the above code with Async/Await!</p>
+<h2 id="Switching-from-Promises-to-Async-Await"><a href="#Switching-from-Promises-to-Async-Await" class="headerlink" title="Switching from Promises to Async/Await."></a>Switching from Promises to Async/Await.</h2><p>Awesome! Now lets see just how much easier we could write the above code with Async/Await!</p>
 <p>Remove the <code>addPromise</code> function, and create a new function named <code>addAsync</code>. This function will have the exact same purpose as our <code>addPromise</code> did. When you create your <code>addPromise</code> function, make use of the <code>async</code> keyword. Here’s what that looks like:</p>
 <pre><code>async function addAsync(x) {  // code here...}</code></pre><p>Now that you’ve created an async function, we can make use of the <code>await</code> keyword which will pause our code until the Promise has resolved. Here’s how easy that is:</p>
 <pre><code>async function addAsync(x) {
@@ -71,10 +67,7 @@ console.log(sum);// undefined</code></pre><p>The problem with the above code is 
   const b = await doubleAfter2Seconds(20);
   const c = await doubleAfter2Seconds(30);
   return x + a + b + c;
-}</code></pre><p>And here’s the full code:</p>
-<iframe src="https://codeburst.io/media/78f20ff677add615fde3269870a1142c" allowfullscreen="" frameborder="0" height="461" width="680" title="Async/Await Example" class="ew t u id ak" scrolling="auto" style="box-sizing: inherit; top: 0px; left: 0px; width: 680px; position: absolute; height: 461px;"></iframe>
-As you can see, we’re still making use of the same `doubleAfter2Seconds` function. Similarly, we’ll be invoking our `addAsync()` function and passing in the value of `10`. Upon completion, we log the resulting value. Let’s walk through this step-by-step:
-
+}</code></pre><p>As you can see, we’re still making use of the same <code>doubleAfter2Seconds</code> function. Similarly, we’ll be invoking our <code>addAsync()</code> function and passing in the value of <code>10</code>. Upon completion, we log the resulting value. Let’s walk through this step-by-step:</p>
 <ul>
 <li>First we call <code>addAsync(10)</code> passing in the value of <code>10</code>.</li>
 <li>Next, we get the value of <code>a</code> on line 10. Since the <code>await</code> keyword is used, our function pauses for two seconds while we wait for the promise to resolve. Once the promise resolves, <code>a = 20</code>.</li>
