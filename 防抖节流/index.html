@@ -1,8 +1,8 @@
 <!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><meta name="viewport" content="width=device-width, initial-scale=1"><title>防抖节流</title><link rel="shortcut icon" href="/images/ghost.jpg"><link rel="stylesheet" href="/css/style.min.css"><link rel="stylesheet" href="/css/font-awesome.min.css"><link rel="stylesheet" href="//cdn.bootcss.com/highlight.js/9.2.0/styles/github.min.css"><script src="//cdn.bootcss.com/highlight.js/9.2.0/highlight.min.js"></script><meta name="generator" content="Hexo 4.0.0"></head><body><nav class="main-nav"><a href="/">Home</a><a href="/archives">Archives</a><a href="/about">About Me</a></nav><div class="profile"><section id="wrapper"><header id="header"><a href="/"><img class="2x" id="avatar" src="/images/ghost.jpg"></a><h1>Redamancy_13</h1><h2></h2></header></section></div><section class="post" id="wrapper"><article><header><h1>防抖节流</h1><h2 class="headline">Dec 09, 2019 4:57·
-445 words
+454 words
 ·
 2 minutes read<span class="tags"></span></h2></header><section id="post-body"><h2 id="防抖和节流"><a href="#防抖和节流" class="headerlink" title="防抖和节流"></a>防抖和节流</h2><blockquote>
-<p>防抖(debounce)和节流(throttle)两词其实并非计算机领域的原生词语。追根溯源，防抖一词来自于弱电领域，指代的是消除外界对于开关扰动的技术。而节流来自于流体力学，指代的是限定流体流量的一种技术。由于JavaScript拥有事件驱动的特性，为避免事件频繁触发导致性能的损耗，防抖和节流这两种技术在JavaScript中亦被广泛应用。</p>
+<p>防抖(debounce)和节流(throttle)两词其实并非计算机领域的原生词语。追根溯源，防抖一词来自于弱电领域，指代的是消除外界对于开关扰动的技术。而节流来自于流体力学，指代的是限定流体流量的一种技术。由于 JavaScript 拥有事件驱动的特性，为避免事件频繁触发导致性能的损耗，防抖和节流这两种技术在 JavaScript 中亦被广泛应用。</p>
 </blockquote>
 <h3 id="防抖"><a href="#防抖" class="headerlink" title="防抖"></a>防抖</h3><pre><code class="html">&lt;!DOCTYPE html&gt;
 &lt;html lang=&quot;en&quot;&gt;
@@ -25,11 +25,11 @@
           if (timer) {
             clearTimeout(timer);
             timer = setTimeout(() =&gt; {
-              fn();
+              fn.apply(this, arguments);
             }, delay);
           } else {
             timer = setTimeout(() =&gt; {
-              fn();
+              fn.apply(this, arguments);
             }, delay);
           }
         };
@@ -53,20 +53,22 @@
     &lt;button id=&quot;zzt&quot;&gt;请点我&lt;/button&gt;
     &lt;script&gt;
       let goal = document.getElementById(&quot;zzt&quot;);
-      func = () =&gt; {console.log(&#39;节流！节流！节流！&#39;)}
-      function x(fn,ms){
-        let timerA = 0
-        return function(){
-          let timerB = new Date()
-          if(timerB - timerA &gt;= ms){
-            fn()
-            timerA = timerB
-          }else{
-            console.log(&#39;两次调用间隔小于3s&#39;)
+      func = () =&gt; {
+        console.log(&quot;节流！节流！节流！&quot;);
+      };
+      function x(fn, ms) {
+        let timerA = 0;
+        return function() {
+          let timerB = new Date();
+          if (timerB - timerA &gt;= ms) {
+            fn.apply(this, arguments);
+            timerA = timerB;
+          } else {
+            console.log(&quot;两次调用间隔小于3s&quot;);
           }
-        }
+        };
       }
-      goal.addEventListener(&quot;click&quot;, x(func,3000));
+      goal.addEventListener(&quot;click&quot;, x(func, 3000));
     &lt;/script&gt;
   &lt;/body&gt;
 &lt;/html&gt;</code></pre>
