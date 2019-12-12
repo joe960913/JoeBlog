@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Joe">
+
+
+
+    <meta name="description" content="Winter Of Love">
+
+
+
+<title>this在React组件中的指向 | Redamancy_13</title>
+
+
+
+    <link rel="icon" href="/pheart.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Joe&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Joe&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">this在React组件中的指向</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Joe</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">August 11, 2018&nbsp;&nbsp;10:50:29</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Work/">Work</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <p>之前学习Js的时候以为<code>this</code>的指向已经掌握了，没想到在学习React的时候又被<code>this</code>绕晕了，记录一下。🤯</p>
+<pre><code>class Clock extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { date: new Date() };
+    //this.tick = this.tick.bind(this);
+  }
+  tick () {
+    this.setState({ date: new Date() });
+  }
+  componentDidMount() {
+    this.timeID = setInterval(() =&gt; this.tick(), 1000);
+  } //挂载
+  componentWillUnmount() {
+    clearInterval(this.timeID)
+  } //卸载
+  render() {
+    return (
+      &lt;div&gt;
+        &lt;h1&gt;now time is&lt;/h1&gt;
+        &lt;h1&gt;{this.state.date.toLocaleTimeString()}&lt;/h1&gt;
+      &lt;/div&gt;
+    );
+  }
+}</code></pre><p>上面是React官方文档的一个计时器demo，一共出现了六次<code>this</code>。</p>
+<hr>
+<pre><code>constructor(props) {
+    super(props);
+    this.state = { date: new Date() };</code></pre><p><code>constructor</code>中的this，<code>constructor</code>是一种用于创建和初始化<code>clock类</code>创建的对象实例的特殊方法，<code>super</code>是调用父类构造函数，参数就是传到父类构造函数的参数，<code>super(x)即Parent.call(this,x)</code>,<code>this</code>指向<code>clock类</code>的实例对象。</p>
+<hr>
+<pre><code>tick () {
+    this.setState({ date: new Date() });</code></pre><p>类中的方法<code>tick</code>，同样，指向类的实例化对象。</p>
+<hr>
+<p>其实后面的没必要讲了，因为<code>this</code>的指向无非下面几种：</p>
+<ul>
+<li>当<code>this</code>定义在一个普通对象的方法中，它指向该对象。另外，当类中的方法要引用类属性时，要加上<code>this</code>，否则会报错。</li>
+<li>当<code>this</code>定于在一个构造函数/类的方法中，它指向该构造函数/类的实例对象。</li>
+<li>出现<code>call,apply,bind</code>方法时，<code>this</code>指向传入的参数对象。</li>
+</ul>
+<hr>
+<p>永远的一句话总结，this的指向被调用时所在的上下文。<br>另外，箭头函数的<code>this</code>绑定在定义时所在的普通函数，不会随着环境的改变而改变，除非那个普通函数的<code>this</code>改变。</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Joe</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://joesir.club/this-point/">https://joesir.club/this-point/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>L̶o̶n̶e̶l̶y̶ ̶d̶a̶y̶s̶ ̶a̶r̶e̶ ̶g̶o̶n̶e̶</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/React/"># React</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/antd-table/">antd-table组件添加分页属性</a>
+            
+            
+            <a class="next" rel="next" href="/react-lifecircle/">React生命周期总结</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>ℑ 𝔞𝔪 𝔞𝔩𝔴𝔞𝔶𝔰 𝔰𝔬 𝔰𝔬𝔯𝔯𝔶</span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>

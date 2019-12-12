@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Joe">
+
+
+
+    <meta name="description" content="Winter Of Love">
+
+
+
+<title>React.forwardRef &amp; React.lazy | Redamancy_13</title>
+
+
+
+    <link rel="icon" href="/pheart.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Joe&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Joe&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">React.forwardRef &amp; React.lazy</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Joe</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">December 12, 2019&nbsp;&nbsp;16:51:01</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/Work/">Work</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h2 id="React-forwardRef-和-React-lazy"><a href="#React-forwardRef-和-React-lazy" class="headerlink" title="React.forwardRef 和 React.lazy"></a>React.forwardRef 和 React.lazy</h2><h3 id="1-React-forwardRef"><a href="#1-React-forwardRef" class="headerlink" title="1. React.forwardRef"></a>1. React.forwardRef</h3><p>React.forwardRef会创建一个React组件，这个组件能够将其接受的ref属性转发到其组件树下的另一个组件中。</p>
+<p>这种情况并不常见，但是对于如下的场景尤其适用：</p>
+<pre><code class="react">const FancyButton = React.forwardRef((props, ref) =&gt; (
+  &lt;button ref={ref} className=&quot;FancyButton&quot;&gt;
+    {props.children}
+  &lt;/button&gt;
+));
+
+// You can now get a ref directly to the DOM button:
+const ref = React.createRef();
+&lt;FancyButton ref={ref}&gt;Click me!&lt;/FancyButton&gt;;</code></pre>
+<p>对于FancyButton这个组件，我们可以把它看作一个按钮的高级封装，有时我们希望这个组件可以像操纵原生button（获取焦点，获取value）DOM那样被我们控制。</p>
+<p>Ref转发允许我们给某些组件赋予ref，并将其向下传递给子组件。</p>
+<p>再考虑上面的代码，具体流程是这样的：</p>
+<ol>
+<li>调用React.createRef创建一个React ref并交给变量ref。</li>
+<li>把这个变量ref交给 FancyButton组件。</li>
+<li>观察FancyButton组件，可以看到React.forwardRef接受的第二个参数ref，组件内ref向下传递给了button。</li>
+<li>当ref挂载完成时，ref.current将指向button的DOM节点。</li>
+</ol>
+<blockquote>
+<p>注意</p>
+<p>第二个参数 <code>ref</code> 只在使用 <code>React.forwardRef</code> 定义组件时存在。常规函数和 class 组件不接收 <code>ref</code> 参数，且 props 中也不存在 <code>ref</code>。</p>
+<p>Ref 转发不仅限于 DOM 组件，你也可以转发 refs 到 class 组件实例中。</p>
+</blockquote>
+<hr>
+<h3 id="2-React-Lazy"><a href="#2-React-Lazy" class="headerlink" title="2. React.Lazy"></a>2. React.Lazy</h3><p><code>React.lazy()</code> 允许你定义一个动态加载的组件。这有助于缩减 bundle 的体积，并延迟加载在初次渲染时未用到的组件。</p>
+<p><em>渲染 <code>lazy</code> 组件依赖该组件渲染树上层的 <code>&lt;React.Suspense&gt;</code> 组件。这是指定加载指示器（loading indicator）的方式。</em></p>
+<p>Just like this:</p>
+<pre><code class="react">const SomeComponent = React.lazy(() =&gt; import(&#39;./SomeComponent&#39;));</code></pre>
+<p><code>React.Suspense</code> 可以指定加载指示器（loading indicator），以防其组件树中的某些子组件尚未具备渲染条件。</p>
+<pre><code class="react">// 该组件是动态加载的
+const OtherComponent = React.lazy(() =&gt; import(&#39;./OtherComponent&#39;));
+
+function MyComponent() {
+  return (
+    // 显示 &lt;Spinner&gt; 组件直至 OtherComponent 加载完成
+    &lt;React.Suspense fallback={&lt;Spinner /&gt;}&gt;
+      &lt;div&gt;
+        &lt;OtherComponent /&gt;
+      &lt;/div&gt;
+    &lt;/React.Suspense&gt;
+  );
+}</code></pre>
+<p><strong>请注意，<code>lazy</code> 组件可以位于 <code>Suspense</code> 组件树的深处——它不必包装树中的每一个延迟加载组件。最佳实践是将<code>&lt;Suspense&gt;</code>置于你想展示加载指示器（loading indicator）的位置，而 <code>lazy()</code> 则可被放置于任何你想要做代码分割的地方。</strong></p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Joe</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://joesir.club/React-forwardRef-React-lazy/">https://joesir.club/React-forwardRef-React-lazy/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>L̶o̶n̶e̶l̶y̶ ̶d̶a̶y̶s̶ ̶a̶r̶e̶ ̶g̶o̶n̶e̶</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/React/"># React</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/%E9%98%B2%E6%8A%96%E8%8A%82%E6%B5%81/">防抖节流</a>
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>ℑ 𝔞𝔪 𝔞𝔩𝔴𝔞𝔶𝔰 𝔰𝔬 𝔰𝔬𝔯𝔯𝔶</span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
