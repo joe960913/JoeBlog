@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Joe">
+
+
+
+    <meta name="description" content="Winter Of Love">
+
+
+
+<title>React生命周期总结 | Redamancy_13</title>
+
+
+
+    <link rel="icon" href="/child/favicon.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/child/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/child/js/script.js"></script>
+    
+    <script src="/child/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/child/">Joe&#39;s Blog</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/child/archives">Posts</a>
+                
+                    <a class="menu-item" href="/child/category">Categories</a>
+                
+                    <a class="menu-item" href="/child/tag">Tags</a>
+                
+                    <a class="menu-item" href="/child/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/child/">Joe&#39;s Blog</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/child/archives">Posts</a>
+                
+                    <a class="menu-item" href="/child/category">Categories</a>
+                
+                    <a class="menu-item" href="/child/tag">Tags</a>
+                
+                    <a class="menu-item" href="/child/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">React生命周期总结</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Joe</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">August 9, 2018&nbsp;&nbsp;10:36:31</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/child/categories/Work/">Work</a>
+                            
+                        </span>
+                    
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="render"><a href="#render" class="headerlink" title="render( )"></a>render( )</h1><p><code>render()</code> 方法是 class 组件中唯一必须实现的方法。</p>
+<p>当 <code>render</code> 被调用时，它会检查 <code>this.props</code> 和 <code>this.state</code> 的变化并返回以下类型之一：</p>
+<ul>
+<li><strong>React 元素</strong>。通常通过 JSX 创建。例如，<code>&lt;div /&gt;</code> 会被 React 渲染为 DOM 节点，<code>&lt;MyComponent /&gt;</code> 会被 React 渲染为自定义组件，无论是 <code>&lt;div /&gt;</code> 还是 <code>&lt;MyComponent /&gt;</code> 均为 React 元素。</li>
+<li><strong>字符串或数值类型</strong>。它们在 DOM 中会被渲染为文本节点</li>
+<li><strong>布尔类型或 <code>null</code></strong>。什么都不渲染。（主要用于支持返回 <code>test &amp;&amp; &lt;Child /&gt;</code> 的模式，其中 test 为布尔类型。)</li>
+</ul>
+<p><code>render()</code> 函数应该为纯函数，这意味着在不修改组件 state 的情况下，每次调用时都返回相同的结果，并且它不会直接与浏览器交互。如需与浏览器进行交互，请在 <code>componentDidMount()</code> 或其他生命周期方法中执行你的操作。</p>
+<hr>
+<h1 id="constructor-NaN"><a href="#constructor-NaN" class="headerlink" title="constructor( )"></a>constructor( )</h1><p><strong>如果不初始化 state 或不进行方法绑定，则不需要为 React 组件实现构造函数。</strong></p>
+<p>在 React 组件挂载之前，会调用它的构造函数。在为 <code>React.Component</code> 子类实现构造函数时，应在其他语句之前前调用 <code>super(props)</code>。</p>
+<p>通常，在 React 中，构造函数仅用于以下两种情况：</p>
+<ul>
+<li>通过给 <code>this.state</code> 赋值对象来初始化<a href="https://zh-hans.reactjs.org/docs/state-and-lifecycle.html" target="_blank" rel="noopener">内部 state</a>。</li>
+<li>为<a href="https://zh-hans.reactjs.org/docs/handling-events.html" target="_blank" rel="noopener">事件处理函数</a>绑定实例，如<code>this.handleClick = this.handleClick.bind(this)</code>。</li>
+</ul>
+<p>在 <code>constructor()</code> 函数中<strong>不要调用 <code>setState()</code> 方法</strong>。如果你的组件需要使用内部 <code>state</code>，请直接在构造函数中为 <strong><code>this.state</code> 赋值初始<code>state</code></strong>：</p>
+<p>只能在构造函数中直接为 <code>this.state</code> 赋值。如需在其他方法中赋值，你应使用 <code>this.setState()</code>替代。</p>
+<p>####避免将 props 的值复制给 state。直接使用<code>this.props.xxx</code>就可以了。</p>
+<hr>
+<h1 id="componentDidMount"><a href="#componentDidMount" class="headerlink" title="componentDidMount( )"></a>componentDidMount( )</h1><p><code>componentDidMount()</code> 会在组件插入 DOM 树后立即调用。依赖于 DOM 节点的初始化应该放在这里。如需通过网络请求获取数据，此处是实例化请求的好地方。</p>
+<p>这个方法是比较适合添加订阅的地方。如果添加了订阅，请不要忘记在 <code>componentWillUnmount()</code> 里取消订阅</p>
+<p>你可以在 <code>componentDidMount()</code> 里<strong>可以直接调用 <code>setState()</code></strong>。它将触发额外渲染<code>re-render</code>，但此渲染会发生在浏览器更新屏幕之前。如此保证了即使在 <code>render()</code> 两次调用的情况下，用户也不会看到中间状态。</p>
+<hr>
+<h1 id="componentDidUpdate"><a href="#componentDidUpdate" class="headerlink" title="componentDidUpdate( )"></a>componentDidUpdate( )</h1><pre><code>componentDidUpdate(prevProps, prevState, snapshot)</code></pre><p><code>componentDidUpdate()</code> 会在更新后会被立即调用。首次渲染不会执行此方法。</p>
+<p>当组件更新后，可以在此处对 DOM 进行操作。如果你对更新前后的 props 进行了比较，也可以选择在此处进行网络请求。</p>
+<pre><code>componentDidUpdate(prevProps) {
+  // 典型用法（不要忘记比较 props）：
+  if (this.props.userID !== prevProps.userID) {
+    this.fetchData(this.props.userID);
+  }
+}</code></pre><p>你也可以在 <code>componentDidUpdate()</code> 中<strong>直接调用 <code>setState()</code></strong>，但请注意<strong>它必须被包裹在一个条件语件里</strong>，正如上述的例子那样进行处理，否则会导致死循环。</p>
+<hr>
+<h1 id="componentWillUnmount"><a href="#componentWillUnmount" class="headerlink" title="componentWillUnmount( )"></a>componentWillUnmount( )</h1><p><code>componentWillUnmount()</code> 会在组件卸载及销毁之前直接调用。在此方法中执行必要的清理操作，例如，清除 timer，取消网络请求或清除在 <code>componentDidMount()</code> 中创建的订阅等。</p>
+<p><code>componentWillUnmount()</code> 中<strong>不应调用 <code>setState()</code></strong>，因为该组件将永远不会重新渲染。组件实例卸载后，将永远不会再挂载它。</p>
+<hr>
+<h3 id=""><a href="#" class="headerlink" title=""></a><a href="https://zh-hans.reactjs.org/docs/react-component.html#rarely-used-lifecycle-methods" target="_blank" rel="noopener"></a></h3>
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Joe</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://joesir.club/child/:/title/">https://joesir.club/child/:/title/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>L̶o̶n̶e̶l̶y̶ ̶d̶a̶y̶s̶ ̶a̶r̶e̶ ̶g̶o̶n̶e̶</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/child/tags/React/"># React</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/child/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+                <a class="prev" rel="prev" href="/child/:/title/">this在React组件中的指向</a>
+            
+            
+        </section>
+
+
+    </article>
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>ℑ 𝔞𝔪 𝔞𝔩𝔴𝔞𝔶𝔰 𝔰𝔬 𝔰𝔬𝔯𝔯𝔶</span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
