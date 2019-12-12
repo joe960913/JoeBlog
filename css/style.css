@@ -583,11 +583,11 @@ header label {
 }
 .intro .avatar img:hover {
   position: relative;
-  -webkit-transform: translateY(-0.75em);
-  -moz-transform: translateY(-0.75em);
-  -ms-transform: translateY(-0.75em);
-  -o-transform: translateY(-0.75em);
-  transform: translateY(-0.75em);
+  -webkit-transform: scale(1.1);
+  -moz-transform: scale(1.1);
+  -ms-transform: scale(1.1);
+  -o-transform: scale(1.1);
+  transform: scale(1.1);
   cursor: pointer;
 }
 .nickname {
