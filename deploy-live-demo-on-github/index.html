@@ -14,7 +14,7 @@
 
 
 
-<title>一次周六的夜晚 | Joe&#39;s Blog</title>
+<title>关于如何打包React项目将其展示在GitHubPage上 | Joe&#39;s Blog</title>
 
 
 
@@ -114,7 +114,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">一次周六的夜晚</h1>
+            <h1 class="post-title">关于如何打包React项目将其展示在GitHubPage上</h1>
             
                 <div class="post-meta">
                     
@@ -123,14 +123,14 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">December 15, 2019&nbsp;&nbsp;4:34:29</a>
+                        Date: <a href="#">December 16, 2019&nbsp;&nbsp;11:19:30</a>
                         </span>
                     
                     
                         <span class="post-category">
                     Category:
                             
-                                <a href="/categories/Essay/">Essay</a>
+                                <a href="/categories/Work/">Work</a>
                             
                         </span>
                     
@@ -139,7 +139,41 @@
         </header>
 
         <div class="post-content">
-            <p>住的小区楼下新开一家刺身店，店面很小赶在打烊前的一小时</p>
+            <ol>
+<li><p>将你项目和github仓库连接起来</p>
+</li>
+<li><p>确保你的项目可以成功跑起来</p>
+</li>
+<li><p>修改项目中的package.json文件</p>
+<pre><code class="json">{
+  &quot;name&quot;: &quot;my-weather&quot;,
+  &quot;version&quot;: &quot;0.1.0&quot;,
+  &quot;private&quot;: true,
+  &quot;homepage&quot;: &quot;https://joe960913.github.io/My-Weather-React&quot;,
+  &quot;dependencies&quot;: {
+  ...
+  }
+}</code></pre>
+<p>添加homepage属性，value为<code>https://你的github用户名.github.io/你的项目仓库名</code></p>
+<pre><code class="json">&quot;scripts&quot;: {
+    &quot;start&quot;: &quot;node scripts/start.js&quot;,
+    &quot;build&quot;: &quot;node scripts/build.js&quot;,
+    &quot;test&quot;: &quot;node scripts/test.js&quot;,
+    &quot;predeploy&quot;: &quot;npm run build&quot;,
+    &quot;deploy&quot;: &quot;gh-pages -d build&quot;
+  },</code></pre>
+<p>在脚本内容中添加predeploy和deply属性</p>
+</li>
+<li><p>安装gh-pages</p>
+<p><code>npm install gh-pages --save-dev</code></p>
+</li>
+<li><p>部署项目</p>
+<p><code>npm run deploy</code></p>
+</li>
+<li><p>进入仓库，会多一个gh-pages分支</p>
+<p>进入仓库settings，检查项目是否已经部署到<code>https://joe960913.github.io/xxxx</code></p>
+</li>
+</ol>
 
         </div>
 
@@ -154,7 +188,7 @@
                 
                     <p class="copyright-item">
                         <span>Permalink:</span>
-                        <span><a href="https://joesir.club/one-saturday-night/">https://joesir.club/one-saturday-night/</a></span>
+                        <span><a href="https://joesir.club/deploy-live-demo-on-github/">https://joesir.club/deploy-live-demo-on-github/</a></span>
                     </p>
                 
                 
@@ -177,6 +211,10 @@
                 <span>Tag(s):</span>
                 <span class="tag">
                     
+                    
+                        <a href="/tags/Github/"># Github</a>
+                    
+                        
                 </span>
             </div>
             <div>
@@ -187,10 +225,10 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/deploy-live-demo-on-github/">关于如何打包React项目将其展示在GitHubPage上</a>
+                <a class="prev" rel="prev" href="/simple-weather/">简单的天气查询App（需要梯子）</a>
             
             
-            <a class="next" rel="next" href="/feeling-getting-older/">一首2000年的苦情歌</a>
+            <a class="next" rel="next" href="/one-saturday-night/">一次周六的夜晚</a>
             
         </section>
 

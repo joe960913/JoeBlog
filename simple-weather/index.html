@@ -14,7 +14,7 @@
 
 
 
-<title>一次周六的夜晚 | Joe&#39;s Blog</title>
+<title>简单的天气查询App（需要梯子） | Joe&#39;s Blog</title>
 
 
 
@@ -110,11 +110,73 @@
             <div class="container">
     
     
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
 
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">一次周六的夜晚</h1>
+            <h1 class="post-title">简单的天气查询App（需要梯子）</h1>
             
                 <div class="post-meta">
                     
@@ -123,14 +185,14 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">December 15, 2019&nbsp;&nbsp;4:34:29</a>
+                        Date: <a href="#">December 16, 2019&nbsp;&nbsp;11:34:43</a>
                         </span>
                     
                     
                         <span class="post-category">
                     Category:
                             
-                                <a href="/categories/Essay/">Essay</a>
+                                <a href="/categories/Work/">Work</a>
                             
                         </span>
                     
@@ -139,7 +201,14 @@
         </header>
 
         <div class="post-content">
-            <p>住的小区楼下新开一家刺身店，店面很小赶在打烊前的一小时</p>
+            <blockquote>
+<p>这是一款React Hook打造的简单的天气查询app，由于使用的是 <a href="https://openweathermap.org/api" target="_blank" rel="noopener">https://openweathermap.org/api</a> 因此暂时不支持中文查询。如果查询国内城市需要这样=&gt;shanghai、nanjing.</p>
+</blockquote>
+<p>在线Demo：<a href="https://joesir.club/My-Weather-React/">https://joesir.club/My-Weather-React/</a></p>
+<h3 id="部分截图"><a href="#部分截图" class="headerlink" title="部分截图"></a>部分截图</h3><p><img src="https://i.loli.net/2019/12/16/laEPRuHcWzIxAbO.png" alt="截屏2019-12-1611.22.53.png"></p>
+<p><img src="https://i.loli.net/2019/12/16/OXWngVaGdTL3wMK.png" alt="截屏2019-12-1611.23.09.png"></p>
+<p><img src="https://i.loli.net/2019/12/16/RJax3uSTlOA28Vp.png" alt="截屏2019-12-1611.23.29.png"></p>
+<p><img src="https://i.loli.net/2019/12/16/RJax3uSTlOA28Vp.png" alt="截屏2019-12-1611.23.29.png"></p>
 
         </div>
 
@@ -154,7 +223,7 @@
                 
                     <p class="copyright-item">
                         <span>Permalink:</span>
-                        <span><a href="https://joesir.club/one-saturday-night/">https://joesir.club/one-saturday-night/</a></span>
+                        <span><a href="https://joesir.club/simple-weather/">https://joesir.club/simple-weather/</a></span>
                     </p>
                 
                 
@@ -177,6 +246,10 @@
                 <span>Tag(s):</span>
                 <span class="tag">
                     
+                    
+                        <a href="/tags/React/"># React</a>
+                    
+                        
                 </span>
             </div>
             <div>
@@ -187,10 +260,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/deploy-live-demo-on-github/">关于如何打包React项目将其展示在GitHubPage上</a>
             
-            
-            <a class="next" rel="next" href="/feeling-getting-older/">一首2000年的苦情歌</a>
+            <a class="next" rel="next" href="/deploy-live-demo-on-github/">关于如何打包React项目将其展示在GitHubPage上</a>
             
         </section>
 
