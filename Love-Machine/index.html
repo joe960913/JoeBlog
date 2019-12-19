@@ -134,6 +134,10 @@
                             
                         </span>
                     
+                    <span id="/Love-Machine/" class="leancloud-visitors view" data-flag-title="一台悲观的恋爱机器">
+                        <em class="post-meta-item-text">Pageviews:</em>
+                        <i class="leancloud-visitors-count">loading</i>
+                      </span>
                 </div>
             
         </header>
@@ -196,9 +200,34 @@
             
             
         </section>
-
-
+        <br>
+        <br>
+        
+            <section id="comments" class="comments">
+              <style>
+                .comments{margin:30px;padding:10px;background:#fff}
+                @media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
+              </style>
+              <div class="valine_comment"></div>
+<!--载入js，在</body>之前插入即可-->
+<!--Leancloud 操作库:-->
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<!--Valine 的核心代码库-->
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+      el: '.valine_comment',
+      app_id: 'V1MtEVDzTCbJY51rP1glbhKW-gzGzoHsz',
+      app_key: 'xjOf6UFOwrXfLL70btvCsXuM',
+      placeholder: 'comment here',
+      notify: 'true',
+      verify: 'true',
+    });
+</script>
+            </section>
+        
     </article>
+    
 </div>
 
         </div>
