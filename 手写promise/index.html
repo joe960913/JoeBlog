@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+<meta name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+<meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <meta name="author" content="Joe">
+
+
+
+    <meta name="description" content="Winter Of Love">
+
+
+
+<title>手写promise | Joe&#39;s Blog</title>
+
+
+
+    <link rel="icon" href="/pheart.ico">
+
+
+
+
+    <!-- stylesheets list from _config.yml -->
+    
+    <link rel="stylesheet" href="/css/style.css">
+    
+
+
+
+    <!-- scripts list from _config.yml -->
+    
+    <script src="/js/script.js"></script>
+    
+    <script src="/js/tocbot.min.js"></script>
+    
+
+
+
+    
+    
+        
+    
+
+
+</head>
+<body>
+    <div class="wrapper">
+        <header>
+    <nav class="navbar">
+        <div class="container">
+            <div class="navbar-header header-logo"><a href="/">Home</a></div>
+            <div class="menu navbar-right">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+                <input id="switch_default" type="checkbox" class="switch_default">
+                <label for="switch_default" class="toggleBtn"></label>
+            </div>
+
+        </div>
+    </nav>
+
+    
+    <nav class="navbar-mobile" id="nav-mobile">
+        <div class="container">
+            <div class="navbar-header">
+                <div>
+                    <a href="/">Home</a><a id="mobile-toggle-theme">·&nbsp;Light</a>
+                </div>
+                <div class="menu-toggle" onclick="mobileBtn()">&#9776; Menu</div>
+            </div>
+            <div class="menu" id="mobile-menu">
+                
+                    <a class="menu-item" href="/archives">Posts</a>
+                
+                    <a class="menu-item" href="/category">Categories</a>
+                
+                    <a class="menu-item" href="/tag">Tags</a>
+                
+                    <a class="menu-item" href="/about">About</a>
+                
+            </div>
+        </div>
+    </nav>
+
+</header>
+<script>
+    var mobileBtn = function f() {
+        var toggleMenu = document.getElementsByClassName("menu-toggle")[0];
+        var mobileMenu = document.getElementById("mobile-menu");
+        if(toggleMenu.classList.contains("active")){
+           toggleMenu.classList.remove("active")
+            mobileMenu.classList.remove("active")
+        }else{
+            toggleMenu.classList.add("active")
+            mobileMenu.classList.add("active")
+        }
+    }
+</script>
+        <div class="main">
+            <div class="container">
+    
+    
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
+
+    
+    <article class="post-wrap">
+        <header class="post-header">
+            <h1 class="post-title">手写promise</h1>
+            
+                <div class="post-meta">
+                    
+                        Author: <a itemprop="author" rel="author" href="/">Joe</a>
+                    
+
+                    
+                        <span class="post-time">
+                        Date: <a href="#">December 19, 2019&nbsp;&nbsp;18:00:53</a>
+                        </span>
+                    
+                    
+                        <span class="post-category">
+                    Category:
+                            
+                                <a href="/categories/JavaScript/">JavaScript</a>
+                            
+                        </span>
+                    
+                    <!-- <span id="/%E6%89%8B%E5%86%99promise/" class="leancloud-visitors view" data-flag-title="手写promise">
+                        <em class="post-meta-item-text">Pageviews:</em>
+                        <i class="leancloud-visitors-count"></i>
+                      </span> -->
+                </div>
+            
+        </header>
+
+        <div class="post-content">
+            <h1 id="手写Promise"><a href="#手写Promise" class="headerlink" title="手写Promise"></a>手写Promise</h1><blockquote>
+<p>手写Promise已经成为了非常常见的考题，因此来实现一个简易版的Promise，Let’s get it !</p>
+</blockquote>
+<pre><code class="javascript">const PENDING = &quot;pending&quot;;
+const RESOLVED = &quot;resolved&quot;;
+const REJECTED = &quot;rejected&quot;;
+
+function MyPromise(fn) {
+  const that = this;
+  that.state = PENDING;
+  that.value = null; //用于存储resolve或者reject传入的值
+  that.resolvedCallback = [];
+  that.rejectedCallback = []; //用于保存then中的回调
+
+  function resolve(value) {
+    if (that.state === PENDING) {
+      that.state = RESOLVED;
+      that.value = value;
+      that.resolvedCallback.map(cb =&gt; cb(that.value));
+    }
+  }
+
+  function reject(value) {
+    if (that.state === PENDING) {
+      that.state = REJECTED;
+      that.value = value;
+      that.rejectedCallback.map(cb =&gt; cb(that.value));
+    }
+  }
+
+  try {
+    fn(resolve, reject);
+  } catch (e) {
+    reject(e);
+  }
+}
+
+//实现then方法
+MyPromise.prototype.then = function(onFulfilled, onRejected) {
+  const that = this;
+  onFulfilled = typeof onFulfilled === &quot;function&quot; ? onFulfilled : v =&gt; v;
+  onRejected =
+    typeof onRejected === &quot;function&quot;
+      ? onRejected
+      : r =&gt; {
+          throw r;
+        };
+  if (that.state === PENDING) {
+    that.resolvedCallbacks.push(onFulfilled);
+    that.rejectedCallbacks.push(onRejected);
+  }
+  if (that.state === RESOLVED) {
+    onFulfilled(that.value);
+  }
+  if (that.state === REJECTED) {
+    onRejected(that.value);
+  }
+};</code></pre>
+<p>现在逐步拆解：</p>
+<p>1～10行：</p>
+<ul>
+<li>首先我们创建了三个常量用于表示状态，对于经常使用的一些值都应该通过常量来管理，便于开发及后期维护</li>
+<li>在函数体内部首先创建了常量 <code>that</code>，因为代码可能会异步执行，用于获取正确的 <code>this</code> 对象</li>
+<li>一开始 <code>Promise</code> 的状态应该是 <code>pending</code></li>
+<li><code>value</code> 变量用于保存 <code>resolve</code> 或者 <code>reject</code> 中传入的值</li>
+<li><code>resolvedCallbacks</code> 和 <code>rejectedCallbacks</code> 用于保存 <code>then</code> 中的回调，因为当执行完 <code>Promise</code> 时状态可能还是等待中，这时候应该把 <code>then</code> 中的回调保存起来用于状态改变时使用</li>
+</ul>
+<p>12～26行：</p>
+<ul>
+<li>首先两个函数都得判断当前状态是否为等待中，因为规范规定只有等待态才可以改变状态</li>
+<li>将当前状态更改为对应状态，并且将传入的值赋值给 <code>value</code></li>
+<li>遍历回调数组并执行 </li>
+</ul>
+<p>28～33行：</p>
+<ul>
+<li>实现很简单，执行传入的参数并且将之前两个函数当做参数传进去</li>
+<li>要注意的是，可能执行函数过程中会遇到错误，需要捕获错误并且执行 <code>reject</code> 函数</li>
+</ul>
+<p>接下来实现then方法：</p>
+<p>38～44行：</p>
+<ul>
+<li>首先判断两个参数是否为函数类型，因为这两个参数是可选参数</li>
+<li>当参数不是函数类型时，需要创建一个函数赋值给对应的参数</li>
+</ul>
+<p>45～55行：</p>
+<p>接下来就是一系列判断状态的逻辑，当状态不是等待态时，就去执行相对应的函数。如果状态是等待态的话，就往回调函数中 <code>push</code> 函数，比如如下代码就会进入等待态的逻辑</p>
+
+        </div>
+
+        
+            <section class="post-copyright">
+                
+                    <p class="copyright-item">
+                        <span>Author:</span>
+                        <span>Joe</span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>Permalink:</span>
+                        <span><a href="https://joesir.club/%E6%89%8B%E5%86%99promise/">https://joesir.club/%E6%89%8B%E5%86%99promise/</a></span>
+                    </p>
+                
+                
+                    <p class="copyright-item">
+                        <span>License:</span>
+                        <span>Copyright (c) 2019 <a href="http://creativecommons.org/licenses/by-nc/4.0/" target="_blank" rel="noopener">CC-BY-NC-4.0</a> LICENSE</span>
+                    </p>
+                
+                
+                     <p class="copyright-item">
+                         <span>Slogan:</span>
+                         <span>L̶o̶n̶e̶l̶y̶ ̶d̶a̶y̶s̶ ̶a̶r̶e̶ ̶g̶o̶n̶e̶</span>
+                     </p>
+                
+
+            </section>
+        
+        <section class="post-tags">
+            <div>
+                <span>Tag(s):</span>
+                <span class="tag">
+                    
+                    
+                        <a href="/tags/%E5%89%8D%E7%AB%AF%E5%9F%BA%E7%A1%80/"># 前端基础</a>
+                    
+                        
+                </span>
+            </div>
+            <div>
+                <a href="javascript:window.history.back();">back</a>
+                <span>· </span>
+                <a href="/">home</a>
+            </div>
+        </section>
+        <section class="post-nav">
+            
+            
+            <a class="next" rel="next" href="/comment-here/">新增了评论功能，有空来留言哦</a>
+            
+        </section>
+        <br>
+        <br>
+        
+            <section id="comments" class="comments">
+              <style>
+                .comments{margin:30px;padding:10px;background:#fff}
+                @media screen and (max-width:800px){.comments{margin:auto;padding:10px;background:#fff}}
+              </style>
+              <div class="valine_comment"></div>
+<!--载入js，在</body>之前插入即可-->
+<!--Leancloud 操作库:-->
+<script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+<!--Valine 的核心代码库-->
+<script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+<script>
+  new Valine({
+      el: '.valine_comment',
+      app_id: 'V1MtEVDzTCbJY51rP1glbhKW-gzGzoHsz',
+      app_key: 'xjOf6UFOwrXfLL70btvCsXuM',
+      placeholder: 'Just comment here and leave your e-mail to receive notifications',
+      notify: 'true',
+      verify: 'true',
+    });
+</script>
+            </section>
+        
+    </article>
+    
+</div>
+
+        </div>
+        <footer id="footer" class="footer">
+    <div class="copyright">
+        <span>ℑ 𝔞𝔪 𝔞𝔩𝔴𝔞𝔶𝔰 𝔰𝔬 𝔰𝔬𝔯𝔯𝔶</span>
+    </div>
+</footer>
+
+    </div>
+</body>
+</html>
