@@ -14,7 +14,7 @@
 
 
 
-<title>&amp;&amp; || 运算符 | The blog of Azi</title>
+<title>手写call(),apply(),bind() | The blog of Azi</title>
 
 
 
@@ -176,7 +176,7 @@
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">&amp;&amp; || 运算符</h1>
+            <h1 class="post-title">手写call(),apply(),bind()</h1>
             
                 <div class="post-meta">
                     
@@ -185,18 +185,18 @@
 
                     
                         <span class="post-time">
-                        Date: <a href="#">September 10, 2019&nbsp;&nbsp;10:40:42</a>
+                        Date: <a href="#">December 20, 2019&nbsp;&nbsp;14:55:45</a>
                         </span>
                     
                     
                         <span class="post-category">
                     Category:
                             
-                                <a href="/categories/Work/">Work</a>
+                                <a href="/categories/JavaScript/">JavaScript</a>
                             
                         </span>
                     
-                    <!-- <span id="/%E8%BF%90%E7%AE%97%E7%AC%A6/" class="leancloud-visitors view" data-flag-title="&amp;&amp; || 运算符">
+                    <!-- <span id="/%E6%89%8B%E5%86%99call-apply-bind/" class="leancloud-visitors view" data-flag-title="手写call(),apply(),bind()">
                         <em class="post-meta-item-text">Pageviews:</em>
                         <i class="leancloud-visitors-count"></i>
                       </span> -->
@@ -205,22 +205,59 @@
         </header>
 
         <div class="post-content">
-            <h1 id="1-amp-amp-运算符"><a href="#1-amp-amp-运算符" class="headerlink" title="1. &amp;&amp; 运算符"></a>1. &amp;&amp; 运算符</h1><ul>
-<li>两边条件都为true时，结果才为true</li>
-<li>如果有一个为false，结果就为false</li>
-<li>当第一个条件为false时，就不再判断后面的条件</li>
-</ul>
-<p>注意：</p>
-<p>当数值参与逻辑与运算时，结果为true，那么会返回的会是第二个为真的值。</p>
-<p>如果结果为false，返回的会是第一个为假的值。</p>
-<h1 id="2-运算符"><a href="#2-运算符" class="headerlink" title="2. || 运算符"></a>2. || 运算符</h1><ul>
-<li>只要有一个条件为true时，结果就为true</li>
-<li>当两个条件都为false时，结果才为false</li>
-<li>当一个条件为true时，后面的条件不再判断</li>
-</ul>
-<p>注意：</p>
-<p>当数值参与逻辑或运算时，结果为true，会返回第一个为真的值。</p>
-<p>如果结果为false，会返回第二个为假的值。</p>
+            <h1 id="手写call，apply，bind函数"><a href="#手写call，apply，bind函数" class="headerlink" title="手写call，apply，bind函数"></a>手写call，apply，bind函数</h1><blockquote>
+<p>call函数</p>
+</blockquote>
+<pre><code class="javascript">Function.prototype.myCall = function(ctx) {
+  if (typeof this !== &quot;function&quot;) {
+    throw new TypeError(&quot;Error&quot;);
+  }
+  ctx = ctx || window;
+  args = [...arguments].slice(1);
+  ctx.fn = this;
+  let res = ctx.fn(...args);
+  delete ctx.fn;
+  return res;
+};</code></pre>
+<p>实现起来很简单，需要注意的一点是存在不传参数的情况，这时this指向window。</p>
+<hr>
+<blockquote>
+<p>apply函数</p>
+</blockquote>
+<pre><code class="javascript">Function.prototype.myApply = function(context) {
+  if (typeof this !== &quot;function&quot;) {
+    throw new TypeError(&quot;Error&quot;);
+  }
+
+  context = context || window;
+  context.fn = this;
+  let res;
+  if (arguments[1]) {
+    res = context.fn(...arguments[1]);
+  } else {
+    res = context.fn();
+  }
+  delete context.fn;
+  return res;
+};</code></pre>
+<p>和call非常类似，需要注意的是传入apply的第二个参数是数组，这是要区别对待的。</p>
+<hr>
+<blockquote>
+<p>bind函数</p>
+</blockquote>
+<pre><code class="javascript">Function.prototype.myBind = function(context) {
+  let self = this;
+  let obj = [].shift.call(arguments);
+  let args = [...arguments];
+  return function() {
+    self.apply(obj, [...args, ...arguments]);
+  };
+};</code></pre>
+<p>bind函数返回一个this指向入参对象的函数。</p>
+<p>第2行：将原函数保存起来</p>
+<p>第3行：提取传入的对象</p>
+<p>第4行：提取剩余的参数</p>
+<p>最后返回一个函数，调用apply方法，将原函数的this指向提取的对象。需要注意的是，参数 = 之前提取的剩余参数 + 调用返回的函数接受的参数。</p>
 
         </div>
 
@@ -235,7 +272,7 @@
                 
                     <p class="copyright-item">
                         <span>Permalink:</span>
-                        <span><a href="https://joesir.club/%E8%BF%90%E7%AE%97%E7%AC%A6/">https://joesir.club/%E8%BF%90%E7%AE%97%E7%AC%A6/</a></span>
+                        <span><a href="https://joesir.club/%E6%89%8B%E5%86%99call-apply-bind/">https://joesir.club/%E6%89%8B%E5%86%99call-apply-bind/</a></span>
                     </p>
                 
                 
@@ -259,7 +296,7 @@
                 <span class="tag">
                     
                     
-                        <a href="/tags/Javascript/"># Javascript</a>
+                        <a href="/tags/%E5%9F%BA%E7%A1%80/"># 基础</a>
                     
                         
                 </span>
@@ -272,10 +309,8 @@
         </section>
         <section class="post-nav">
             
-                <a class="prev" rel="prev" href="/Promise/">Promise</a>
             
-            
-            <a class="next" rel="next" href="/react-key/">react-native中SectionList的keyExtractor属性</a>
+            <a class="next" rel="next" href="/%E6%B8%BA%E5%B0%8F%E7%9A%84%E6%88%91%E4%BB%AC/">一文不值</a>
             
         </section>
         <br>
