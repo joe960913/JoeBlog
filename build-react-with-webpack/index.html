@@ -14,7 +14,7 @@
 
 
 
-<title>build react with webpack | The blog of Azi</title>
+<title>使用 Webpack 4 and Babel 从零构建 React 项目 | The blog of Azi</title>
 
 
 
@@ -110,11 +110,73 @@
             <div class="container">
     
     
+        <div class="post-toc">
+    <div class="tocbot-list">
+    </div>
+    <div class="tocbot-list-menu">
+        <a class="tocbot-toc-expand" onclick="expand_toc()">Expand all</a>
+        <a onclick="go_top()">Back to top</a>
+        <a onclick="go_bottom()">Go to bottom</a>
+    </div>
+</div>
+
+<script>
+    document.ready(
+        function () {
+            tocbot.init({
+                tocSelector: '.tocbot-list',
+                contentSelector: '.post-content',
+                headingSelector: 'h1, h2, h3, h4, h5',
+                collapseDepth: 1,
+                orderedList: false,
+                scrollSmooth: true,
+            })
+        }
+    )
+
+    function expand_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 6,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "collapse_toc()");
+        b.innerHTML = "Collapse all"
+    }
+
+    function collapse_toc() {
+        var b = document.querySelector(".tocbot-toc-expand");
+        tocbot.init({
+            tocSelector: '.tocbot-list',
+            contentSelector: '.post-content',
+            headingSelector: 'h1, h2, h3, h4, h5',
+            collapseDepth: 1,
+            orderedList: false,
+            scrollSmooth: true,
+        });
+        b.setAttribute("onclick", "expand_toc()");
+        b.innerHTML = "Expand all"
+    }
+
+    function go_top() {
+        window.scrollTo(0, 0);
+    }
+
+    function go_bottom() {
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+</script>
+    
 
     
     <article class="post-wrap">
         <header class="post-header">
-            <h1 class="post-title">build react with webpack</h1>
+            <h1 class="post-title">使用 Webpack 4 and Babel 从零构建 React 项目</h1>
             
                 <div class="post-meta">
                     
@@ -130,14 +192,95 @@
                     
                 </div>
             
-            <!-- <span id="/build-react-with-webpack/" class="leancloud-visitors view" data-flag-title="build react with webpack">
+            <!-- <span id="/build-react-with-webpack/" class="leancloud-visitors view" data-flag-title="使用 Webpack 4 and Babel 从零构建 React 项目">
                 <em class="post-meta-item-text">Pageviews:</em>
                 <i class="leancloud-visitors-count">loading</i>
               </span> -->
         </header>
 
         <div class="post-content">
-            <p>Hello</p>
+            <h2 id="使用-Webpack-4-and-Babel-从零构建-React-项目"><a href="#使用-Webpack-4-and-Babel-从零构建-React-项目" class="headerlink" title="使用 Webpack 4 and Babel 从零构建 React 项目"></a>使用 Webpack 4 and Babel 从零构建 React 项目</h2><h4 id="创建目录结构"><a href="#创建目录结构" class="headerlink" title="创建目录结构"></a>创建目录结构</h4><pre><code class="shell">mkdir react-boilerplate
+cd react-boilerplate
+mkdir -p src/components src/styles</code></pre>
+<h4 id="初始化项目"><a href="#初始化项目" class="headerlink" title="初始化项目"></a>初始化项目</h4><pre><code class="shell">npm init</code></pre>
+<p>这一步会创建 Package.json 文件</p>
+<h4 id="初始化-Webpack"><a href="#初始化-Webpack" class="headerlink" title="初始化 Webpack"></a>初始化 Webpack</h4><pre><code class="shell">npm install webpack webpack-cli -S</code></pre>
+<p>webpack用于打包项目，webpack-cli帮助我们可以在命令行中使用webpack</p>
+<h4 id="初始化webpack"><a href="#初始化webpack" class="headerlink" title="初始化webpack"></a>初始化webpack</h4><pre><code class="shell">npm install react react-dom --save</code></pre>
+<h4 id="初始化Babel"><a href="#初始化Babel" class="headerlink" title="初始化Babel"></a>初始化Babel</h4><pre><code class="shell">npm install @babel/core babel-loader @babel/preset-env @babel/preset-react --save-dev</code></pre>
+<ul>
+<li>babel-core:ES6 =&gt; ES5</li>
+<li>babel-loader:预设条件下，webpack转译代码</li>
+<li>babel-preset-env:Preset帮助babel将ES6,ES7,ES8代码转换为ES5</li>
+<li>babel-preset-react:JSX =&gt; JavaScript</li>
+</ul>
+<p>在/src下创建index.js以及index.html</p>
+<h4 id="入口文件和出口文件"><a href="#入口文件和出口文件" class="headerlink" title="入口文件和出口文件"></a>入口文件和出口文件</h4><p>在根目录下创建webpack.config.js，为loader制定一些规则。</p>
+<pre><code class="javascript">const path = require(&quot;path&quot;);
+
+module.exports = {
+  entry: &quot;./src/index.js&quot;,
+  output: {
+    path: path.join(__dirname, &quot;./dist&quot;),
+    filename: &quot;index_bundle.js&quot;
+  }
+};</code></pre>
+<p>webpack会打包所有js文件在index_bundel.js（在/dist目录下）中</p>
+<h4 id="Webpack-Loaders"><a href="#Webpack-Loaders" class="headerlink" title="Webpack Loaders"></a>Webpack Loaders</h4><p>在webpack.config.js中，添加</p>
+<pre><code class="javascript">const path = require(&quot;path&quot;);
+
+module.exports = {
+  entry: &quot;./src/index.js&quot;,
+  output: {
+    path: path.join(__dirname, &quot;/dist&quot;),
+    filename: &quot;index_bundle.js&quot;
+  },
+  module: {
+    rules: [
+      {
+        test: /\.js$/,
+        exclude: /node_modules/,
+        use: {
+          loader: &quot;babel-loader&quot;
+        },
+      },
+      {
+        test: /\.css$/,
+        use: [&quot;style-loader&quot;, &quot;css-loader&quot;]
+      }
+    ]
+  }
+};</code></pre>
+<p><code>npm install **css-loader** **style-loader** --save-dev</code></p>
+<ul>
+<li>babel-loader用来载入jsx/js文件</li>
+<li>css-loader用来打包css文件到一个文件中</li>
+<li>style-loader用来加载样式</li>
+</ul>
+<h4 id="babelrc"><a href="#babelrc" class="headerlink" title=".babelrc"></a>.babelrc</h4><p>在根目录下新建.babelrc文件，添加</p>
+<pre><code>{
+  &quot;presets&quot;: [&quot;@babel/preset-env&quot;, &quot;@babel/preset-react&quot;]
+}</code></pre><ul>
+<li>env:ES6/ES7/ES8 =&gt; ES5</li>
+<li>JSX =&gt; ES5</li>
+</ul>
+<h4 id="通过Webpack编译文件"><a href="#通过Webpack编译文件" class="headerlink" title="通过Webpack编译文件"></a>通过Webpack编译文件</h4><p>在package.json中的script属性加入：</p>
+<pre><code>&quot;start&quot;: &quot;webpack --mode development --watch&quot;,
+&quot;build&quot;: &quot;webpack --mode production&quot;
+</code></pre><ul>
+<li>watch:任何时候资源文件发生改变，webpack都会自动编译</li>
+<li>webpack 4有两种模式，分别是开发模式和生产模式</li>
+</ul>
+<p>执行下面命令</p>
+<pre><code>npm start
+</code></pre><p>你会在/dist文件夹下看到index_bundle.js文件</p>
+<h4 id="安装-Webpack-dev-server"><a href="#安装-Webpack-dev-server" class="headerlink" title="安装 Webpack-dev-server"></a>安装 Webpack-dev-server</h4><pre><code>npm install webpack-dev-server --save-dev
+</code></pre><p>修改package.json中的start脚本属性</p>
+<pre><code>&quot;start&quot;:&quot;webpack-dev-server --mode development --open --hot&quot;
+</code></pre><p>–open和–hot是用来打开浏览器并在你修改文件的时候即时刷新浏览器的</p>
+<p>再次</p>
+<pre><code>npm start
+</code></pre><p>大功告成！</p>
 
         </div>
 
@@ -175,6 +318,10 @@
                 <span>Tag(s):</span>
                 <span class="tag">
                     
+                    
+                        <a href="/tags/React-Webpack/"># React Webpack</a>
+                    
+                        
                 </span>
             </div>
             <div>
